@@ -1,0 +1,24 @@
+#Create app as admin
+#Install into workspace
+#pip install slack_sdk
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
+import os
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
+
+slack_token = "app-bot-token-here"
+#slack_token = os.environ["SLACK_BOT_TOKEN"]
+client = WebClient(token=slack_token)
+
+try:
+    response = client.chat_postMessage(
+        channel="channel-id",
+        username="user-id-to-send-slack-as",
+        token="user-oauth-token-here",
+        text="Simpson!  The web site is down!"
+    )
+except SlackApiError as e:
+    # You will get a SlackApiError if "ok" is False
+    assert e.response["error"]    # str like 'invalid_auth', 'channel_not_found'
